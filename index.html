@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dirgahayu Republik Indonesia ke-80</title>
+
+    <link rel="preload" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Coat_of_arms_of_Indonesia.svg/800px-Coat_of_arms_of_Indonesia.svg.png" as="image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+    /* Mengatur latar belakang HTML dan BODY agar langsung berwarna merah (primary-color)
+        saat dimuat untuk mencegah "flash putih" sebelum loading screen tampil */
+    html, body {
+        background-color: var(--primary-color); 
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* Mencegah scroll horizontal pada keseluruhan halaman */
+        scroll-behavior: smooth;
+    }
+
+    /* General Styling */
+    :root {
+        --primary-color: #E4002B; /* Merah Bendera - lebih cerah, modern */
+        --secondary-color: #FFFFFF; /* Putih Bersih */
+        --light-bg: #FAFAFA; /* Latar belakang terang */
+        --dark-text: #333; /* Teks gelap untuk background terang */
+        --accent-red: #CC0000; /* Aksen merah lebih tua */
+        --accent-gold: #FFD700; /* Aksen emas (opsional, bisa diganti merah/oranye) */
+        --accent-blue: #00A3FF; /* Aksen biru (opsional, untuk variasi cerah) */
+        --light-red: #FFD1D1; /* Merah muda lembut */
+
+        --font-heading: 'Montserrat', sans-serif;
+        --font-body: 'Poppins', sans-serif;
+    }
+
+    /* Ini adalah styling dasar untuk body, akan diterapkan setelah loading screen hilang */
+    body {
+        font-family: var(--font-body);
+        line-height: 1.6;
+        color: var(--dark-text); /* Warna teks default dark-text */
+        /* opacity: 0; Ini akan dikontrol oleh JS untuk transisi */
+        transition: opacity 0.5s ease-in;
+    }
+
+    /* Class yang ditambahkan oleh JS setelah loading screen selesai */
+    body.loaded {
+        opacity: 1;
+        overflow-y: auto; /* Aktifkan scroll vertikal setelah dimuat */
+        background-color: var(--light-bg); /* Ubah ke background utama setelah loaded */
+    }
+
+    .container {
+        max-width: 1300px; /* Lebar container lebih luas */
+        margin: 0 auto;
+        padding: 0 30px; /* Padding samping untuk kenyamanan */
+    }
+
+    /* Loading Screen */
+    #loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--secondary-color); /* Changed to white */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        color: var(--primary-color); /* Text color changed for contrast on white */
+        font-family: var(--font-heading);
+        font-weight: 700;
+        opacity: 1;
+        transition: opacity 1s ease-out, visibility 1s ease-out;
+        text-align: center; /* Center text within the flex item */
+    }
+
+    #loading-screen.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none; /* Pastikan tidak bisa diklik setelah hilang */
+    }
+
+    #loading-screen img.garuda-logo {
+        width: clamp(100px, 20vw, 200px); /* Ukuran responsif */
+        height: auto;
+        margin-bottom: 20px;
+        animation: rotateIn 1.5s ease-out forwards, pulseGlow 2s infinite alternate; /* Animasi berputar dan bersinar */
+    }
+
+    /* Adjust pulseGlow for white background */
+    @keyframes pulseGlow {
+        0% {
+            filter: drop-shadow(0 0 5px var(--primary-color)) drop-shadow(0 0 15px var(--accent-gold));
+        }
+        50% {
+            filter: drop-shadow(0 0 10px var(--primary-color)) drop-shadow(0 0 25px var(--accent-gold));
+        }
+        100% {
+            filter: drop-shadow(0 0 5px var(--primary-color)) drop-shadow(0 0 15px var(--accent-gold));
+        }
+    }
+
+    #loading-screen p {
+        font-size: 2.8em; /* Ukuran teks lebih besar */
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+        text-shadow: 0 0 20px rgba(0,0,0,0.1), 0 0 30px rgba(0,0,0,0.1); /* Adjusted shadow for white background */
+        animation: textPulse 2s infinite alternate;
+    }
+
+    #loading-screen span {
+        font-size: 1.5em;
+        color: var(--accent-gold); /* Tahun dengan aksen emas (opsional) */
+        animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes textPulse {
+        0% { transform: scale(1); opacity: 0.9; }
+        100% { transform: scale(1.03); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Header (Navbar) */
+    header {
+        background: rgba(255, 255, 255, 0.9); /* Latar belakang navbar putih transparan */
+        padding: 18px 0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(8px); /* Efek blur yang modern */
+        border-bottom: 1px solid var(--primary-color); /* Garis merah di bawah */
+    }
+
+    header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    header .logo {
+        font-family: var(--font-heading);
+        font-size: 2.2em;
+        font-weight: 800;
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    header .logo:hover {
+        color: var(--accent-red);
+    }
+
+    /* Default Navbar (for Desktop) */
+    header nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    header nav ul li {
+        margin-left: 35px; /* Jarak antar item nav */
+    }
+
+    header nav ul li a {
+        color: var(--dark-text);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 10px 0;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    header nav ul li a::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: -5px;
+        width: 0;
+        height: 2px;
+        background: var(--accent-blue); /* Garis bawah biru (opsional) */
+        transition: width 0.3s ease, left 0.3s ease, background 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    header nav ul li a:hover,
+    header nav ul li a.active {
+        color: var(--primary-color);
+    }
+
+    header nav ul li a:hover::after,
+    header nav ul li a.active::after {
+        width: 100%;
+        background: var(--primary-color); /* Garis bawah merah saat aktif/hover */
+    }
+    
+    /* REMOVED: Hamburger Menu Button CSS */
+    /* REMOVED: Overlay for Mobile Menu CSS */
+
+    /* Hero Section */
+    .hero {
+        background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(240,240,240,0.7) 100%), url('https://via.placeholder.com/1920x800/E4002B/FFFFFF?text=KEMERDEKAAN+INDONESIA') no-repeat center center/cover;
+        background-blend-mode: overlay;
+        color: var(--primary-color);
+        text-align: center;
+        padding: 120px 20px; /* Padding lebih besar */
+        min-height: 600px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        transition: background 1s ease-in-out;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Coat_of_arms_of_Indonesia.svg/800px-Coat_of_arms_of_Indonesia.svg.png') no-repeat center center; /* Lambang Garuda */
+        background-size: 30%; /* Ukuran lebih pas */
+        opacity: 0.05; /* Sangat subtle */
+        z-index: 1;
+        filter: grayscale(100%) brightness(80%); /* Lebih terang */
+    }
+
+    .hero .content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero h2 {
+        font-family: var(--font-heading);
+        font-size: clamp(3em, 8vw, 5.5em); /* Ukuran font adaptif */
+        margin-bottom: 25px;
+        text-shadow: 0 0 15px rgba(228, 0, 43, 0.8); /* Lebih fokus pada merah */
+        line-height: 1.1;
+        font-weight: 800;
+    }
+
+    .hero p {
+        font-size: clamp(1.2em, 2.5vw, 1.8em);
+        margin-bottom: 40px;
+        max-width: 900px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        color:white;
+    }
+
+    .btn {
+        display: inline-block;
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+        padding: 14px 30px;
+        text-decoration: none;
+        border-radius: 8px; /* Sudut lebih lembut */
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        border: 2px solid var(--primary-color);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .btn:hover {
+        background-color: var(--accent-red);
+        border-color: var(--accent-red);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(204, 0, 0, 0.3);
+    }
+
+    .btn-secondary {
+        background-color: var(--secondary-color);
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        margin-left: 20px;
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--light-red);
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        box-shadow: 0 8px 20px rgba(255, 209, 209, 0.4);
+    }
+
+    /* Section Content */
+    .section-content {
+        padding: 80px 0;
+        text-align: center;
+        position: relative;
+        z-index: 5;
+        background-color: var(--secondary-color); /* Default putih */
+    }
+
+    .section-content:nth-of-type(even) { /* Latar belakang bergantian */
+        background-color: var(--light-bg);
+    }
+
+    .section-content h2 {
+        font-family: var(--font-heading);
+        font-size: clamp(2.2em, 5vw, 3.5em);
+        margin-bottom: 40px;
+        color: var(--primary-color);
+        position: relative;
+        display: inline-block;
+        font-weight: 700;
+    }
+
+    .section-content h2::after {
+        content: '';
+        display: block;
+        width: 80px; /* Lebih lebar */
+        height: 4px; /* Lebih tebal */
+        background-color: var(--primary-color); /* Garis merah */
+        margin: 15px auto 0;
+        border-radius: 2px;
+    }
+
+    .section-content p {
+        margin-bottom: 30px;
+        font-size: 1.1em;
+        color: var(--dark-text);
+    }
+
+    /* Card Grid for Proposal - Horizontal */
+    .card-grid {
+        display: flex; /* Changed to flex */
+        overflow-x: auto; /* Enable horizontal scrolling */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        scroll-snap-type: x mandatory; /* Snap to cards */
+        gap: 30px; /* Gap between cards */
+        margin-top: 50px;
+        padding-bottom: 10px; /* Add padding for scrollbar visibility */
+    }
+
+    .card {
+        flex: 0 0 auto; /* Don't grow, don't shrink, base on content */
+        width: 300px; /* Fixed width for horizontal items */
+        scroll-snap-align: start; /* Snap to the start of each card */
+        background-color: var(--secondary-color); /* Putih */
+        border: 1px solid #ddd;
+        border-radius: 12px; /* Lebih rounded */
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        text-align: left;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-left 0.5s ease;
+        position: relative;
+        overflow: hidden;
+        border-left: 5px solid var(--primary-color); /* Garis merah di kiri */
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .card-grid::-webkit-scrollbar,
+    .panitia-grid::-webkit-scrollbar,
+    .gallery-container::-webkit-scrollbar,
+    .contact-info::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .card-grid,
+    .panitia-grid,
+    .gallery-container,
+    .contact-info {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        border-left-color: var(--accent-red); /* Berubah jadi merah tua saat hover */
+    }
+
+    .card h3 {
+        font-family: var(--font-heading);
+        color: var(--primary-color); /* Judul card merah */
+        margin-top: 0;
+        font-size: 1.7em;
+        margin-bottom: 15px;
+    }
+
+    .card p, .card ul {
+        color: var(--dark-text);
+        font-size: 1em;
+    }
+    .card ul {
+        list-style: none; /* Hilangkan bullet default */
+        padding-left: 0;
+    }
+    .card ul li {
+        position: relative;
+        padding-left: 20px; /* Ruang untuk ikon */
+        margin-bottom: 8px;
+    }
+    .card ul li::before {
+        content: '•'; /* Ganti dengan simbol bullet kustom */
+        color: var(--primary-color); /* Warna bullet merah */
+        font-size: 1.2em;
+        position: absolute;
+        left: 0;
+        top: 2px;
+    }
+
+    /* Table Styling for Keuangan */
+    table {
+        width: 100%; /* Ensure table takes full available width */
+        border-collapse: collapse;
+        margin: 40px auto;
+        background-color: var(--secondary-color); /* Putih */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-radius: 12px;
+        overflow: hidden; /* Prevent content from breaking out */
+        color: var(--dark-text);
+        border: 1px solid #ddd;
+    }
+
+    table th, table td {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+    }
+
+    table thead th {
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-family: var(--font-heading);
+    }
+
+    table tbody tr:nth-child(even) {
+        background-color: #f9f9f9; /* Abu-abu sangat muda */
+    }
+
+    table tfoot th, table tfoot td {
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+        font-weight: 700;
+        font-family: var(--font-heading);
+        border-top: 2px solid var(--accent-red);
+    }
+
+    /* Panitia Section - Horizontal */
+    #panitia .panitia-grid {
+        display: flex; /* Changed to flex */
+        overflow-x: auto; /* Enable horizontal scrolling */
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory; /* Snap to members */
+        gap: 30px; /* Gap between members */
+        margin-top: 40px;
+        padding-bottom: 10px; /* For scrollbar visibility */
+    }
+
+    #panitia .panitia-member {
+        flex: 0 0 auto; /* Don't grow, don't shrink, base on content */
+        width: 250px; /* Fixed width for horizontal items */
+        scroll-snap-align: start; /* Snap to the start of each member */
+        background-color: var(--secondary-color); /* Putih */
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    #panitia .panitia-member:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        border-color: var(--primary-color);
+    }
+
+    #panitia .panitia-member img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--primary-color);
+        margin-bottom: 15px;
+    }
+
+    #panitia .panitia-member h3 {
+        font-family: var(--font-heading);
+        color: var(--primary-color);
+        margin-bottom: 5px;
+        font-size: 1.4em;
+    }
+
+    #panitia .panitia-member p {
+        color: var(--dark-text);
+        font-size: 0.95em;
+        margin-bottom: 5px;
+    }
+
+    /* Gallery Section - Horizontal */
+    #gallery .gallery-buttons {
+        margin-bottom: 40px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    #gallery .gallery-buttons button {
+        background-color: var(--secondary-color);
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        padding: 10px 20px;
+        font-size: 1.05em;
+        font-family: var(--font-body);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 2px 8px rgba(228, 0, 43, 0.1);
+    }
+
+    #gallery .gallery-buttons button:hover {
+        background-color: var(--light-red);
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(228, 0, 43, 0.2);
+    }
+
+    #gallery .gallery-buttons button.active {
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 15px rgba(228, 0, 43, 0.5);
+    }
+
+    #gallery .gallery-container {
+        display: flex; /* Changed to flex */
+        overflow-x: auto; /* Enable horizontal scrolling */
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory; /* Snap to items */
+        gap: 25px; /* Gap between gallery items */
+        width: 100%;
+        max-width: 1200px;
+        margin-top: 30px;
+        padding-bottom: 10px; /* For scrollbar visibility */
+    }
+
+    #gallery .gallery-item {
+        flex: 0 0 auto; /* Don't grow, don't shrink, base on content */
+        width: 300px; /* Fixed width for horizontal items */
+        scroll-snap-align: start; /* Snap to the start of each item */
+        background-color: var(--secondary-color);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #ddd;
+        display: flex;
+        flex-direction: column;
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    #gallery .gallery-item.hidden {
+        display: none; /* Sembunyikan sepenuhnya */
+    }
+
+    #gallery .gallery-item:hover {
+        transform: translateY(-5px) scale(1.02);
+        border-color: var(--primary-color);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    #gallery .gallery-item img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        display: block;
+        border-bottom: 1px solid #eee;
+    }
+
+    #gallery .gallery-item-info {
+        padding: 20px;
+        text-align: left;
+        flex-grow: 1;
+    }
+
+    #gallery .gallery-item-info h3 {
+        font-family: var(--font-heading);
+        font-size: 1.4em;
+        margin-bottom: 8px;
+        color: var(--primary-color);
+    }
+
+    #gallery .gallery-item-info p {
+        font-size: 0.9em;
+        color: var(--dark-text);
+        margin-bottom: 0;
+    }
+
+    /* Contact Info & Form - Horizontal */
+    .contact-info {
+        display: flex; /* Changed to flex */
+        overflow-x: auto; /* Enable horizontal scrolling */
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory; /* Snap to contact persons */
+        justify-content: flex-start; /* Align items to start */
+        gap: 30px;
+        flex-wrap: nowrap; /* Prevent wrapping */
+        margin-top: 30px;
+        padding-bottom: 10px; /* For scrollbar visibility */
+    }
+
+    .contact-person {
+        flex: 0 0 auto; /* Don't grow, don't shrink, base on content */
+        width: 280px; /* Fixed width for horizontal items */
+        scroll-snap-align: start; /* Snap to the start of each person */
+        background-color: var(--secondary-color);
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        max-width: 400px; /* Retain max-width for larger screens */
+        text-align: left;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .contact-person:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        border-color: var(--primary-color);
+    }
+
+    .contact-person h3 {
+        font-family: var(--font-heading);
+        color: var(--primary-color);
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 1.5em;
+    }
+
+    .contact-person p {
+        margin: 8px 0;
+        color: var(--dark-text);
+        font-size: 1em;
+    }
+
+    .contact-person a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .contact-person a:hover {
+        color: var(--accent-red);
+        text-decoration: underline;
+    }
+
+    .contact-form {
+        max-width: 700px;
+        margin: 50px auto 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 30px;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        background-color: var(--secondary-color);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-family: var(--font-body);
+        font-size: 1em;
+        background-color: var(--secondary-color); /* Input field background */
+        color: var(--dark-text);
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+        color: #999;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 10px rgba(228, 0, 43, 0.3);
+    }
+
+    .contact-form button {
+        align-self: center; /* Tombol di tengah */
+        width: auto;
+        min-width: 200px;
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+        border: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 2px 8px rgba(228, 0, 43, 0.3);
+    }
+
+    .contact-form button:hover {
+        background-color: var(--accent-red);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(228, 0, 43, 0.5);
+    }
+
+    /* Footer */
+    footer {
+        background-color: #333; /* Abu-abu gelap */
+        color: var(--secondary-color);
+        text-align: center;
+        padding: 30px 0;
+        margin-top: 80px;
+        border-top: 2px solid var(--primary-color);
+        font-size: 0.9em;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .container {
+            padding: 0 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        header .container {
+            flex-direction: row; 
+            justify-content: center; /* Center the logo on mobile */
+        }
+        header .logo {
+            font-size: 2em; /* Slightly larger logo for mobile when it's the only element */
+        }
+        header nav {
+            display: none; /* Hide desktop nav on mobile */
+        }
+
+        .hero {
+            padding: 80px 15px;
+            min-height: 450px;
+        }
+        .hero h2 {
+            font-size: clamp(2em, 7vw, 4em);
+        }
+        .hero p {
+            font-size: clamp(1em, 2vw, 1.4em);
+        }
+        .btn {
+            padding: 12px 25px;
+            font-size: 0.9em;
+        }
+        .btn-secondary {
+            margin-left: 0;
+            margin-top: 15px;
+        }
+
+        .section-content {
+            padding: 60px 0;
+        }
+        .section-content h2 {
+            font-size: clamp(1.8em, 4vw, 2.8em);
+        }
+
+        /* Adjustments for horizontal sections on smaller screens */
+        .card-grid, .panitia-grid, .gallery-container, .contact-info {
+            gap: 20px; /* Smaller gap */
+            padding: 0 15px 10px; /* Add padding to sides for horizontal scroll */
+            margin-left: 0;
+            margin-right: 0;
+            width: auto; /* Allow content to dictate width in overflow */
+            justify-content: flex-start; /* Align items to start */
+        }
+
+        .card {
+            width: 280px; /* Slightly smaller width for cards */
+        }
+        #panitia .panitia-member {
+            width: 220px; /* Slightly smaller width for panitia members */
+        }
+        #gallery .gallery-item {
+            width: 280px; /* Slightly smaller width for gallery items */
+        }
+        .contact-person { /* Adjust width for contact persons */
+            width: 280px;
+        }
+
+        /* Table adjustments for 768px and below */
+        table {
+            display: table; /* Revert to table display if enough space */
+            width: 95%; /* Make it fit slightly better within container */
+            margin: 20px auto;
+            overflow-x: hidden; /* Ensure no horizontal scroll on table itself */
+            white-space: normal; /* Ensure text wraps within cells */
+        }
+        table th, table td {
+            padding: 12px;
+            font-size: 0.9em; /* Smaller font for table content */
+        }
+        table thead th {
+            font-size: 1em; /* Keep header font size readable */
+        }
+
+        .contact-form {
+            margin: 30px auto 0;
+            padding: 20px;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            padding: 12px; /* Smaller padding for inputs */
+            font-size: 0.9em; /* Smaller font for inputs */
+        }
+        .contact-form button {
+            padding: 12px 25px; /* Smaller button padding */
+            font-size: 1em; /* Smaller button font */
+        }
+
+        /* Gallery filter buttons for smaller screens */
+        #gallery .gallery-buttons button {
+            padding: 8px 15px; /* Smaller padding */
+            font-size: 0.9em; /* Smaller font */
+            flex-grow: 1; /* Allow buttons to grow and fill space */
+            min-width: unset; /* Remove min-width restriction */
+        }
+
+        #gallery .gallery-item img {
+            height: 180px; /* Slightly reduce gallery image height */
+        }
+        #gallery .gallery-item-info h3 {
+            font-size: 1.2em; /* Smaller gallery title */
+        }
+        #gallery .gallery-item-info p {
+            font-size: 0.85em; /* Smaller gallery description */
+        }
+    }
+
+    @media (max-width: 425px) {
+        .container {
+            padding: 0 15px; /* Reduce container padding further */
+        }
+        #loading-screen p {
+            font-size: 2em; /* Slightly smaller for 425px */
+        }
+        #loading-screen span {
+            font-size: 1.2em;
+        }
+        header .logo {
+            font-size: 1.8em;
+        }
+        .hero {
+            padding: 60px 10px; /* Reduce hero padding */
+            min-height: 400px; /* Adjust min-height */
+        }
+        .hero h2 {
+            font-size: clamp(1.8em, 9vw, 3.5em); /* More aggressive clamping for smaller screens */
+            margin-bottom: 15px;
+        }
+        .hero p {
+            font-size: clamp(0.9em, 2.8vw, 1.2em); /* More aggressive clamping */
+            margin-bottom: 30px;
+        }
+        .btn {
+            padding: 10px 20px; /* Smaller button size */
+            font-size: 0.8em;
+        }
+        .btn-secondary {
+            margin-top: 10px; /* Reduce top margin for stacked buttons */
+        }
+
+        .section-content {
+            padding: 40px 0; /* Reduce section padding */
+        }
+        .section-content h2 {
+            font-size: clamp(1.6em, 6vw, 2.5em); /* Smaller section headings */
+            margin-bottom: 25px;
+        }
+        .section-content p {
+            font-size: 1em; /* Maintain readability */
+        }
+
+        /* Further adjustments for horizontal sections */
+        .card-grid, .panitia-grid, .gallery-container, .contact-info {
+            gap: 15px; /* Even smaller gap */
+            padding: 0 10px 10px; /* Adjust padding for very small screens */
+        }
+
+        .card {
+            width: 260px; /* Adjust card width */
+        }
+        .card h3 {
+            font-size: 1.5em; /* Adjust card title size */
+        }
+        .card p, .card ul {
+            font-size: 0.95em; /* Adjust card text size */
+        }
+
+        #panitia .panitia-member {
+            width: 200px; /* Adjust panitia member width */
+        }
+        #panitia .panitia-member img {
+            width: 100px; /* Smaller image */
+            height: 100px;
+        }
+        #panitia .panitia-member h3 {
+            font-size: 1.2em;
+        }
+        #panitia .panitia-member p {
+            font-size: 0.85em;
+        }
+
+        #gallery .gallery-buttons {
+            gap: 10px;
+        }
+        #gallery .gallery-buttons button {
+            padding: 6px 12px;
+            font-size: 0.8em;
+        }
+        #gallery .gallery-item {
+            width: 260px; /* Adjust gallery item width */
+        }
+        #gallery .gallery-item img {
+            height: 160px;
+        }
+        #gallery .gallery-item-info h3 {
+            font-size: 1.1em;
+        }
+        #gallery .gallery-item-info p {
+            font-size: 0.8em;
+        }
+
+        .contact-person {
+            padding: 20px;
+            width: 260px; /* Adjust contact person width */
+        }
+        .contact-person h3 {
+            font-size: 1.3em;
+        }
+        .contact-person p {
+            font-size: 0.9em;
+        }
+        .contact-form {
+            margin: 30px auto 0;
+            padding: 15px;
+            gap: 15px;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            padding: 10px;
+            font-size: 0.85em;
+        }
+        .contact-form button {
+            padding: 10px 20px;
+            font-size: 0.9em;
+            min-width: 150px;
+        }
+        footer {
+            padding: 20px 0;
+            margin-top: 50px;
+            font-size: 0.8em;
+        }
+    }
+
+    @media (max-width: 375px) {
+        #loading-screen p {
+            font-size: 1.8em;
+        }
+        #loading-screen span {
+            font-size: 1em;
+        }
+        header .logo {
+            font-size: 1.8em; /* Adjusted logo size for 375px */
+        }
+        .hero h2 {
+            font-size: clamp(1.6em, 10vw, 3em);
+        }
+        .hero p {
+            font-size: clamp(0.85em, 3vw, 1.1em);
+        }
+        .btn {
+            padding: 8px 18px;
+            font-size: 0.75em;
+        }
+        
+        .card {
+            width: 240px; /* Adjust card width */
+        }
+        #panitia .panitia-member {
+            width: 180px; /* Adjust panitia member width */
+        }
+        #gallery .gallery-item {
+            width: 240px; /* Adjust gallery item width */
+        }
+        .contact-person {
+            width: 240px; /* Adjust contact person width */
+        }
+    }
+
+    @media (max-width: 320px) {
+        #loading-screen p {
+            font-size: 1.5em;
+            letter-spacing: 1px;
+        }
+        #loading-screen span {
+            font-size: 0.9em;
+        }
+        header .logo {
+            font-size: 1.6em;
+        }
+        .hero {
+            padding: 50px 8px; /* Even less padding */
+            min-height: 350px; /* Smaller min-height */
+        }
+        .hero h2 {
+            font-size: clamp(1.4em, 11vw, 2.8em);
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: clamp(0.8em, 3.2vw, 1em);
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 7px 15px;
+            font-size: 0.7em;
+        }
+
+        .section-content {
+            padding: 30px 0; /* Even less section padding */
+        }
+        .section-content h2 {
+            font-size: clamp(1.4em, 6.5vw, 2.2em);
+            margin-bottom: 20px;
+        }
+        .section-content p {
+            font-size: 0.9em;
+        }
+
+        .card-grid, .panitia-grid, .gallery-container, .contact-info {
+            gap: 10px; /* Smallest gap */
+            padding: 0 8px 8px; /* Smallest padding */
+        }
+        .card {
+            width: 220px; /* Smallest card width */
+            padding: 15px;
+        }
+        .card h3 {
+            font-size: 1.3em;
+        }
+        .card p, .card ul {
+            font-size: 0.9em;
+        }
+        .card ul li {
+            padding-left: 18px;
+        }
+        .card ul li::before {
+            font-size: 1.1em;
+            top: 1px;
+        }
+
+        table th, table td {
+            padding: 8px; /* Smallest table padding */
+            font-size: 0.8em;
+        }
+        table thead th {
+            font-size: 0.9em;
+        }
+
+        #panitia .panitia-member {
+            width: 160px; /* Smallest panitia member width */
+            padding: 15px;
+        }
+        #panitia .panitia-member img {
+            width: 80px;
+            height: 80px;
+        }
+        #panitia .panitia-member h3 {
+            font-size: 1.1em;
+        }
+        #panitia .panitia-member p {
+            font-size: 0.8em;
+        }
+
+        #gallery .gallery-buttons button {
+            padding: 5px 10px;
+            font-size: 0.75em;
+        }
+        #gallery .gallery-item {
+            width: 220px; /* Smallest gallery item width */
+        }
+        #gallery .gallery-item img {
+            height: 140px;
+        }
+        #gallery .gallery-item-info h3 {
+            font-size: 1em;
+        }
+        #gallery .gallery-item-info p {
+            font-size: 0.75em;
+        }
+
+        .contact-person {
+            padding: 15px;
+            width: 220px; /* Adjust contact person width */
+        }
+        .contact-person h3 {
+            font-size: 1.2em;
+        }
+        .contact-person p {
+            font-size: 0.85em;
+        }
+        .contact-form {
+            padding: 10px;
+            gap: 10px;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            padding: 8px;
+            font-size: 0.8em;
+        }
+        .contact-form button {
+            padding: 8px 15px;
+            font-size: 0.8em;
+            min-width: 120px;
+        }
+        footer {
+            padding: 15px 0;
+            font-size: 0.75em;
+        }
+    }
+</style>
+</head>
+<body>
+
+    <div id="loading-screen">
+        <img src="assets/logogaruda.png" alt="Logo Garuda Pancasila" class="garuda-logo">
+        <p>DIRGAHAYU REPUBLIK INDONESIA</p>
+        <span>80 TAHUN</span>
+    </div>
+
+    <header>
+        <div class="container">
+            <a href="#" class="logo">Kampung kecil</a>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#beranda" class="active">Beranda</a></li>
+                    <li><a href="#proposal">Proposal</a></li>
+                    <li><a href="#keuangan">Keuangan</a></li>
+                    <li><a href="#panitia">Panitia</a></li>
+                    <li><a href="#gallery">Galeri</a></li>
+                    <li><a href="#kontak">Kontak</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="beranda" class="hero">
+            <div class="content">
+                <h2>Semangat Kemerdekaan <br>Abadi di Hati Bangsa</h2>
+                <p>Bersama kita rayakan 80 tahun kemerdekaan Indonesia. Kobarkan semangat persatuan, wujudkan mimpi para pahlawan.</p>
+                <a href="#proposal" class="btn">Lihat Proposal Acara</a>
+                <a href="#gallery" class="btn btn-secondary">Jelajahi Galeri</a>
+            </div>
+        </section>
+
+        <section id="proposal" class="section-content">
+            <div class="container">
+                <h2>Rencana & Visi Perayaan</h2>
+                <p>Proposal lengkap kami merinci setiap aspek perayaan 17 Agustus ke-80, mulai dari jadwal kegiatan hingga tujuan mulia di baliknya. Transparansi dan detail adalah prioritas kami.</p>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Latar Belakang & Tujuan</h3>
+                        <p>Perayaan ini adalah wujud syukur atas kemerdekaan dan ajang mempererat tali silaturahmi, menumbuhkan jiwa nasionalisme di kalangan warga.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Rangkaian Acara Utama</h3>
+                        <ul>
+                            <li>Upacara Bendera Khidmat (Pagi)</li>
+                            <li>Lomba Tradisional Inovatif (Siang)</li>
+                            <li>Pentas Seni Modern & Budaya (Sore)</li>
+                            <li>Malam Kebersamaan & Doa (Malam)</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Estimasi Anggaran</h3>
+                        <p>Total estimasi anggaran kegiatan ini akan dijelaskan secara rinci dalam dokumen proposal lengkap.</p>
+                        <a href="assets/Proposal Kegiatan HUT RI 80_RT011_RT004_RW002.pdf" class="btn btn-small" style="background-color: var(--accent-blue); border-color: var(--accent-blue);">Unduh Proposal Lengkap</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="keuangan" class="section-content">
+            <div class="container">
+                <h2>Transparansi Laporan Keuangan</h2>
+                <p>Kami berkomitmen penuh pada transparansi keuangan. Setiap donasi dan pengeluaran dicatat dengan cermat, memastikan akuntabilitas bagi seluruh pihak yang terlibat.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Deskripsi</th>
+                            <th>Pemasukan (IDR)</th>
+                            <th>Pengeluaran (IDR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Donasi Warga & Sponsorship</td><td>[Total Pemasukan]</td><td>-</td></tr>
+                        <tr><td>Sewa Perlengkapan & Sound System</td><td>-</td><td>[Biaya]</td></tr>
+                        <tr><td>Hadiah Lomba & Logistik</td><td>-</td><td>[Biaya]</td></tr>
+                        <tr><td>Konsumsi Panitia & Peserta</td><td>-</td><td>[Biaya]</td></tr>
+                        <tr><td>Publikasi & Dokumentasi</td><td>-</td><td>[Biaya]</td></tr>
+                        <tr><td>Pos Cadangan</td><td>-</td><td>[Biaya]</td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <th>[Total Pemasukan]</th>
+                            <th>[Total Pengeluaran]</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Saldo Akhir</th>
+                            <th>[Saldo Akhir]</th>
+                        </tr>
+                    </tfoot>
+                </table>
+                <p>Untuk laporan keuangan lebih detail dengan bukti transaksi, silakan unduh di bawah ini:</p>
+                <a href="assets/Proposal Kegiatan HUT RI 80_RT011_RT004_RW002.pdf" class="btn btn-secondary">Unduh Laporan Keuangan (PDF)</a>
+            </div>
+        </section>
+
+        <section id="panitia" class="section-content">
+            <div class="container">
+                <h2>Panitia Pelaksana 2025</h2>
+                <p>Kenali para individu berdedikasi yang bekerja keras di balik layar untuk menyukseskan perayaan akbar ini. Semangat gotong royong adalah kunci kami.</p>
+                <div class="panitia-grid">
+                    <div class="panitia-member">
+                        <img src="assets/fadil.jpg" alt="Foto Fadil">
+                        <h3>M Noer Fadillah</h3>
+                        <p>Ketua Panitia</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/wahyu.jpg" alt="Foto wahyu">
+                        <h3>Wahyu Febrizal</h3>
+                        <p>Wakil Ketua Panitia</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/raki.jpg" alt="Foto raki">
+                        <h3>Raki setiawan</h3>
+                        <p>Bendahara</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/alfiyah.jpg" alt="Foto alfiyah">
+                        <h3>Alfiyah</h3>
+                        <p>Sekeretaris</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/ade.jpg" alt="Foto Sari">
+                        <h3>Ade Wahyudi</h3>
+                        <p>Penanggung jawab</p>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="section-content">
+            <div class="container">
+                <h2>Jejak Sejarah Dalam Foto</h2>
+                <p>Selami kembali momen-momen indah dan penuh semangat kemerdekaan dari tahun-tahun sebelumnya. Setiap gambar menceritakan kisah kebersamaan dan kebanggaan.</p>
+
+                <div class="gallery-buttons">
+                    <button data-year="2017">2017</button>
+                    <button data-year="2018">2018</button>
+                    <button data-year="2019">2019</button>
+                    <button data-year="2022">2022</button>
+                    <button data-year="2023">2023</button>
+                    <button data-year="2024">2024</button>
+                </div>
+
+                <div class="gallery-container">
+                    <div class="gallery-item" data-year="2017">
+                        <img src="assets/gallery2017-1.jpg" alt="Galeri 2017 Foto 1">
+                        <div class="gallery-item-info">
+                            <h3>Foto old</h3>
+                            <p>Saksi sejarah.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-year="2017">
+                        <img src="assets/gallery2017-2.jpg" alt="Galeri 2017 Foto 2">
+                        <div class="gallery-item-info">
+                            <h3>Foto panitia</h3>
+                            <p>Saksi sejarah.</p>
+                        </div>
+                    </div>
+                    
+
+                    <div class="gallery-item" data-year="2018">
+                        <img src="assets/gallery2018-1.jpg" alt="Galeri 2018 Foto 1">
+                        <div class="gallery-item-info">
+                            <h3>Foto Panitia</h3>
+                            <p>dokumentasi panitia 2018.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-year="2018">
+                        <img src="assets/gallery2018-2.jpg" alt="Galeri 2018 Foto 2">
+                        <div class="gallery-item-info">
+                            <h3>generasi merah putih</h3>
+                            <p>bocah bocah porok</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-year="2019">
+                        <img src="assets/gallery2019-1.jpg" alt="Galeri 2019 Foto 1">
+                        <div class="gallery-item-info">
+                            <h3>panitia 2019</h3>
+                            <p>dokumentasi sebelum pawai kemerdekaan.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-year="2019">
+                        <img src="assets/gallery2019-2.jpg" alt="Galeri 2019 Foto 2">
+                        <div class="gallery-item-info">
+                            <h3>Apresiasi Seni & Kreativitas</h3>
+                            <p>pawai kemerdekaan tahun 2019</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-year="2022">
+                        <img src="assets/gallery2022-1.jpg" alt="Galeri 2022 Foto 1">
+                        <div class="gallery-item-info">
+                            <h3>panitia 2022</h3>
+                            <p>dokumentasi panitia tahun 2022</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-year="2022">
+                        <img src="assets/gallery2022-2.jpg" alt="Galeri 2022 Foto 2">
+                        <div class="gallery-item-info">
+                            <h3>lomba ambil bendera</h3>
+                            <p></p>
+                        </div>
+                    </div>
+                    
+
+                    <div class="gallery-item" data-year="2023">
+                        <img src="assets/gallery2023-1.jpg" alt="Galeri 2023 Foto 1">
+                        <div class="gallery-item-info">
+                            <h3>pawai 2023</h3>
+                            <p>dokumentasi sebelum pawai.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-year="2023">
+                        <img src="assets/gallery2023-2.jpg" alt="Galeri 2023 Foto 2">
+                        <div class="gallery-item-info">
+                            <h3>panitia 2023</h3>
+                            <p>dokumetasi panitia 2023</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-year="2023">
+                        <img src="assets/gallery2023-3.jpg" alt="Galeri 2023 Foto 3">
+                        <div class="gallery-item-info">
+                            <h3>pawai dengan kreatifitas</h3>
+                            <p>Keseruan dalam pawai.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-year="2023">
+                        <img src="assets/gallery2023-4.jpg" alt="Galeri 2023 Foto 4">
+                        <div class="gallery-item-info">
+                            <h3>Gebyar Produk UMKM</h3>
+                            <p>Dukungan nyata untuk produk-produk lokal.</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-year="2024">
+                        <img src="assets/gallery2024-1.jpg" alt="Galeri 2024 Foto 1">
+                        <div class="gallery-item-info">
+                            <h3></h3>
+                            <p>M.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-year="2024">
+                        <img src="assets/gallery2024-2.jpg" alt="Galeri 2024 Foto 2">
+                        <div class="gallery-item-info">
+                            <h3></h3>
+                            <p>.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-year="2024">
+                        <img src="assets/gallery2024-3.jpg" alt="Galeri 2024 Foto 3">
+                        <div class="gallery-item-info">
+                            <h3>pawai</h3>
+                            <p>pawai .</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kontak" class="section-content">
+            <div class="container">
+                <h2>Hubungi Kami</h2>
+                <p>Untuk informasi lebih lanjut, kolaborasi, atau ingin berpartisipasi, jangan ragu untuk menghubungi tim kami:</p>
+                <div class="contact-info">
+                    <div class="contact-person">
+                        <h3>Muhammad Noer Fadilah</h3>
+                        <p>Posisi: Ketua Panitia</p>
+                        <p>Telepon: <a href="tel:+6281234567890">+62</a></p>
+                        <p>Email: <a href="mailto:fadil.ramadhan@email.com">@email.com</a></p>
+                    </div>
+                    <div class="contact-person">
+                        <h3>Alfiyah</h3>
+                        <p>Posisi: Sekeretaris</p>
+                        <p>Telepon: <a href="tel:+6287654321098">+62</a></p>
+                        <p>Email: <a href="mailto:alfiyah.n@email.com">.n@email.com</a></p>
+                    </div>
+                </div>
+                <p style="margin-top: 50px;">Atau kirimkan pesan Anda melalui formulir di bawah ini:</p>
+                <form class="contact-form">
+                    <input type="text" placeholder="Nama Lengkap" required>
+                    <input type="email" placeholder="Alamat Email" required>
+                    <textarea placeholder="Pesan Anda..." rows="6" required></textarea>
+                    <button type="submit" class="btn">Kirim Pesan</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Panitia Perayaan 17 Agustus RI ke-80. Dirgahayu Republik Indonesia!</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Loading Screen Logic ---
+            const loadingScreen = document.getElementById('loading-screen');
+            const body = document.body;
+
+            // Hide loading screen after 2.5 seconds and enable body scroll
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                body.classList.add('loaded'); // Add class to body to reveal content and enable scroll
+            }, 2500); // Durasi loading screen (2.5 detik)
+
+            // --- Contact Form Handling ---
+            const contactForm = document.querySelector('.contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); 
+                    alert('Terima kasih! Pesan Anda telah berhasil terkirim. Kami akan segera menghubungi Anda.');
+                    contactForm.reset(); 
+                });
+            }
+
+            // --- Hero Section Background Slider ---
+            const heroSection = document.getElementById('beranda');
+            const heroImages = [
+                'assets/gallery2019-1.jpg',
+                'assets/gallery2023-3.jpg',
+                'assets/gallery2017-1.jpg',
+                'assets/gallery2024-3.jpg',
+                'assets/gallery2018-2.jpg'
+            ];
+            let currentImageIndex = 0;
+
+            function changeHeroBackground() {
+                heroSection.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${heroImages[currentImageIndex]}')`;
+                currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+            }
+            changeHeroBackground(); // Set initial background
+            setInterval(changeHeroBackground, 5000); // Change every 5 seconds
+
+            // --- Gallery Filter Logic ---
+            const galleryButtons = document.querySelectorAll('#gallery .gallery-buttons button');
+            const galleryItems = document.querySelectorAll('#gallery .gallery-item');
+
+            function filterGallery(year) {
+                galleryItems.forEach(item => {
+                    if (year === 'all' || item.dataset.year === year) {
+                        item.classList.remove('hidden');
+                        // Add fade-in effect when showing
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'scale(1)';
+                        }, 50); // Small delay for effect
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'scale(0.95)';
+                        // Hide after fade-out
+                        setTimeout(() => {
+                            item.classList.add('hidden');
+                        }, 500); // Match CSS transition duration
+                    }
+                });
+            }
+
+            galleryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    galleryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    filterGallery(this.dataset.year);
+                });
+            });
+
+            // Set 2024 as default active filter on load
+            const defaultYearButton = document.querySelector('#gallery .gallery-buttons button[data-year="2024"]');
+            if (defaultYearButton) {
+                defaultYearButton.click();
+            }
+        });
+    </script>
+</body>
+</html>
