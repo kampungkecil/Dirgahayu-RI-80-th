@@ -14,8 +14,7 @@
     <style>
     /* Mengatur latar belakang HTML dan BODY agar langsung berwarna merah (primary-color)
         saat dimuat untuk mencegah "flash putih" sebelum loading screen tampil */
-    html, body {
-        background-color: var(--primary-color); 
+    html, body { 
         margin: 0;
         padding: 0;
         overflow-x: hidden; /* Mencegah scroll horizontal pada keseluruhan halaman */
@@ -212,7 +211,7 @@
 
     /* Hero Section */
     .hero {
-        background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(240,240,240,0.7) 100%), url('https://via.placeholder.com/1920x800/E4002B/FFFFFF?text=KEMERDEKAAN+INDONESIA') no-repeat center center/cover;
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/gallery2024-1.jpg') no-repeat center center/cover; /* Default hero background */
         background-blend-mode: overlay;
         color: var(--primary-color);
         text-align: center;
@@ -246,14 +245,14 @@
         z-index: 2;
     }
 
-    .hero h2 {
-        font-family: var(--font-heading);
-        font-size: clamp(3em, 8vw, 5.5em); /* Ukuran font adaptif */
-        margin-bottom: 25px;
-        text-shadow: 0 0 15px rgba(228, 0, 43, 0.8); /* Lebih fokus pada merah */
-        line-height: 1.1;
-        font-weight: 800;
-    }
+   .hero h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(3em, 8vw, 5.5em); /* Ukuran font adaptif */
+    margin-bottom: 25px;
+    line-height: 1.1;
+    font-weight: 800;
+    color: white; /* Ini yang perlu diubah */
+}
 
     .hero p {
         font-size: clamp(1.2em, 2.5vw, 1.8em);
@@ -353,7 +352,7 @@
         scroll-snap-align: start; /* Snap to the start of each card */
         background-color: var(--secondary-color); /* Putih */
         border: 1px solid #ddd;
-        border-radius: 12px; /* Lebih rounded */
+        border-radius: 12px;
         padding: 30px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         text-align: left;
@@ -367,7 +366,9 @@
     .card-grid::-webkit-scrollbar,
     .panitia-grid::-webkit-scrollbar,
     .gallery-container::-webkit-scrollbar,
-    .contact-info::-webkit-scrollbar {
+    .contact-info::-webkit-scrollbar,
+    .modal-content-scroll::-webkit-scrollbar, /* For modal content scroll */
+    .image-modal-overlay::-webkit-scrollbar { /* For image modal overlay scroll */
         display: none;
     }
 
@@ -375,7 +376,9 @@
     .card-grid,
     .panitia-grid,
     .gallery-container,
-    .contact-info {
+    .contact-info,
+    .modal-content-scroll, /* For modal content scroll */
+    .image-modal-overlay { /* For image modal overlay scroll */
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
     }
@@ -416,8 +419,8 @@
         top: 2px;
     }
 
-    /* Table Styling for Keuangan */
-    table {
+    /* Table Styling for Keuangan (inside modal) */
+    .modal-content table { /* Apply to table inside modal */
         width: 100%; /* Ensure table takes full available width */
         border-collapse: collapse;
         margin: 40px auto;
@@ -429,31 +432,193 @@
         border: 1px solid #ddd;
     }
 
-    table th, table td {
-        padding: 15px;
+    .modal-content table th, .modal-content table td {
+        padding: 12px; /* Disesuaikan agar tetap rapi setelah font dikecilkan */
         border-bottom: 1px solid #eee;
         text-align: left;
+        font-size: 0.95em; /* Font size dikecilkan sedikit dari 1em/default */
     }
 
-    table thead th {
+    .modal-content table thead th {
         background-color: var(--primary-color);
         color: var(--secondary-color);
         font-weight: 600;
         text-transform: uppercase;
         font-family: var(--font-heading);
+        font-size: 0.9em; /* Font size header tabel dikecilkan sedikit */
     }
 
-    table tbody tr:nth-child(even) {
+    .modal-content table tbody tr:nth-child(even) {
         background-color: #f9f9f9; /* Abu-abu sangat muda */
     }
 
-    table tfoot th, table tfoot td {
+    .modal-content table tfoot th, .modal-content table tfoot td {
         background-color: var(--primary-color);
         color: var(--secondary-color);
         font-weight: 700;
         font-family: var(--font-heading);
         border-top: 2px solid var(--accent-red);
     }
+
+    /* Fullscreen Modal Styles (for Keuangan) */
+    .modal-overlay {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 2000; /* Sit on top (higher than header) */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal-overlay.show {
+        display: flex;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal-content {
+        background-color: var(--secondary-color);
+        margin: 5% auto; /* 5% from the top and centered */
+        padding: 40px;
+        border-radius: 15px;
+        width: 90%; /* Responsive width */
+        max-width: 1000px; /* Max width */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        position: relative; /* For close button positioning */
+        transform: translateY(20px);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        display: flex; /* Use flex to arrange content and allow scroll */
+        flex-direction: column;
+        max-height: 90vh; /* Max height to allow scrollable content */
+    }
+
+    .modal-overlay.show .modal-content {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .modal-close-btn {
+        color: var(--dark-text);
+        font-size: 2.5em;
+        font-weight: bold;
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        cursor: pointer;
+        transition: color 0.3s ease, transform 0.2s ease;
+    }
+
+    .modal-close-btn:hover,
+    .modal-close-btn:focus {
+        color: var(--primary-color);
+        transform: rotate(90deg);
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-content h2 {
+        font-family: var(--font-heading);
+        font-size: clamp(2em, 4vw, 3.2em);
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        text-align: center; /* Center modal title */
+    }
+
+    .modal-content .modal-content-scroll {
+        overflow-y: auto; /* Enable vertical scrolling for content inside modal */
+        padding-right: 15px; /* Space for scrollbar */
+    }
+
+    .modal-content p {
+        font-size: 0.95em; /* Font size paragraf di modal dikecilkan sedikit dari 1.05em */
+        line-height: 1.6; /* Line height juga disesuaikan agar tidak terlalu renggang */
+        margin-bottom: 15px; /* Margin bawah paragraf juga disesuaikan */
+        text-align: left; /* Keep paragraph text left-aligned */
+    }
+
+    /* Image Modal/Lightbox Styles */
+    .image-modal-overlay {
+        display: none; /* Sembunyikan secara default */
+        position: fixed; /* Tetap di tempat saat menggulir */
+        z-index: 3000; /* Lebih tinggi dari modal keuangan */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto; /* Bisa digulir jika gambar sangat besar */
+        background-color: rgba(0, 0, 0, 0.9); /* Latar belakang gelap transparan */
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .image-modal-overlay.show {
+        display: flex; /* Tampilkan sebagai flexbox untuk centering */
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .image-modal-content {
+        margin: auto;
+        display: block;
+        max-width: 90%; /* Ukuran maksimal gambar */
+        max-height: 90%; /* Ukuran maksimal gambar */
+        border-radius: 10px; /* Sudut sedikit melengkung */
+        object-fit: contain; /* Pastikan gambar terlihat penuh tanpa terpotong */
+        transform: scale(0.8); /* Efek zoom in */
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .image-modal-overlay.show .image-modal-content {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    .image-modal-caption {
+        margin-top: 15px;
+        color: #ccc;
+        font-size: 1.1em;
+        text-align: center;
+        max-width: 80%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .image-modal-overlay.show .image-modal-caption {
+        opacity: 1;
+    }
+
+    .image-modal-close-btn {
+        position: absolute;
+        top: 20px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+        cursor: pointer;
+        z-index: 3001; /* Pastikan di atas overlay dan gambar */
+    }
+
+    .image-modal-close-btn:hover,
+    .image-modal-close-btn:focus {
+        color: var(--primary-color); /* Warna merah saat hover */
+        text-decoration: none;
+        cursor: pointer;
+    }
+
 
     /* Panitia Section - Horizontal */
     #panitia .panitia-grid {
@@ -464,6 +629,22 @@
         gap: 30px; /* Gap between members */
         margin-top: 40px;
         padding-bottom: 10px; /* For scrollbar visibility */
+        
+        /* Animasi geser otomatis */
+        white-space: nowrap; /* Pastikan elemen tetap satu baris untuk animasi */
+        animation: autoScrollPanitia 60s linear infinite; /* Durasi dan jenis animasi */
+        animation-play-state: running; /* Default running */
+    }
+
+    #panitia .panitia-grid:hover {
+        animation-play-state: paused; /* Pause animation on hover */
+    }
+
+    /* Keyframes untuk animasi geser panitia */
+    @keyframes autoScrollPanitia {
+        0% { transform: translateX(0); }
+        /* Adjusted the 100% calculation. This might need fine-tuning based on actual content width. */
+        100% { transform: translateX(calc(-100% + 100vw - 30px)); } 
     }
 
     #panitia .panitia-member {
@@ -477,6 +658,7 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
         text-align: center;
         border: 1px solid #ddd;
+        white-space: normal; /* Kembali ke normal wrapping untuk konten kartu */
     }
 
     #panitia .panitia-member:hover {
@@ -612,27 +794,27 @@
 
     /* Contact Info & Form - Horizontal */
     .contact-info {
-        display: flex; /* Changed to flex */
-        overflow-x: auto; /* Enable horizontal scrolling */
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x mandatory; /* Snap to contact persons */
-        justify-content: flex-start; /* Align items to start */
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center; 
         gap: 30px;
-        flex-wrap: nowrap; /* Prevent wrapping */
         margin-top: 30px;
-        padding-bottom: 10px; /* For scrollbar visibility */
+        padding-bottom: 10px; 
+    }
+
+    .contact-button-wrapper { 
+        text-align: center;
     }
 
     .contact-person {
-        flex: 0 0 auto; /* Don't grow, don't shrink, base on content */
-        width: 280px; /* Fixed width for horizontal items */
-        scroll-snap-align: start; /* Snap to the start of each person */
+        width: auto; 
+        max-width: 400px; 
         background-color: var(--secondary-color);
         border: 1px solid #ddd;
         border-radius: 12px;
         padding: 25px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        max-width: 400px; /* Retain max-width for larger screens */
         text-align: left;
         transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
@@ -657,7 +839,6 @@
     }
 
     .contact-person a {
-        color: var(--primary-color);
         text-decoration: none;
         font-weight: 500;
         transition: color 0.3s ease;
@@ -668,17 +849,8 @@
         text-decoration: underline;
     }
 
-    .contact-form {
-        max-width: 700px;
-        margin: 50px auto 0;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding: 30px;
-        border: 1px solid #ddd;
-        border-radius: 12px;
-        background-color: var(--secondary-color);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    .contact-form { 
+        display: none; 
     }
 
     .contact-form input,
@@ -689,7 +861,7 @@
         border-radius: 8px;
         font-family: var(--font-body);
         font-size: 1em;
-        background-color: var(--secondary-color); /* Input field background */
+        background-color: var(--secondary-color); 
         color: var(--dark-text);
     }
 
@@ -706,7 +878,7 @@
     }
 
     .contact-form button {
-        align-self: center; /* Tombol di tengah */
+        align-self: center; 
         width: auto;
         min-width: 200px;
         background-color: var(--primary-color);
@@ -729,8 +901,8 @@
 
     /* Footer */
     footer {
-        background-color: #333; /* Abu-abu gelap */
-        color: var(--secondary-color);
+        background-color: #ffffff; 
+        color: red;
         text-align: center;
         padding: 30px 0;
         margin-top: 80px;
@@ -748,13 +920,13 @@
     @media (max-width: 768px) {
         header .container {
             flex-direction: row; 
-            justify-content: center; /* Center the logo on mobile */
+            justify-content: center; 
         }
         header .logo {
-            font-size: 2em; /* Slightly larger logo for mobile when it's the only element */
+            font-size: 2em; 
         }
         header nav {
-            display: none; /* Hide desktop nav on mobile */
+            display: none; 
         }
 
         .hero {
@@ -785,82 +957,101 @@
 
         /* Adjustments for horizontal sections on smaller screens */
         .card-grid, .panitia-grid, .gallery-container, .contact-info {
-            gap: 20px; /* Smaller gap */
-            padding: 0 15px 10px; /* Add padding to sides for horizontal scroll */
+            gap: 20px; 
+            padding: 0 15px 10px; 
             margin-left: 0;
             margin-right: 0;
-            width: auto; /* Allow content to dictate width in overflow */
-            justify-content: flex-start; /* Align items to start */
+            width: auto; 
+            justify-content: flex-start; 
         }
 
         .card {
-            width: 280px; /* Slightly smaller width for cards */
+            width: 280px; 
         }
         #panitia .panitia-member {
-            width: 220px; /* Slightly smaller width for panitia members */
+            width: 220px; 
         }
         #gallery .gallery-item {
-            width: 280px; /* Slightly smaller width for gallery items */
+            width: 280px; 
         }
-        .contact-person { /* Adjust width for contact persons */
+        .contact-person { 
             width: 280px;
         }
 
-        /* Table adjustments for 768px and below */
-        table {
-            display: table; /* Revert to table display if enough space */
-            width: 95%; /* Make it fit slightly better within container */
-            margin: 20px auto;
-            overflow-x: hidden; /* Ensure no horizontal scroll on table itself */
-            white-space: normal; /* Ensure text wraps within cells */
+        /* Modal specific adjustments (for Keuangan & Image) */
+        .modal-content {
+            padding: 25px;
+            width: 95%; /* More width on small screens */
+            max-height: 95vh; /* Adjust max height */
         }
-        table th, table td {
-            padding: 12px;
-            font-size: 0.9em; /* Smaller font for table content */
+        .modal-content h2 {
+            font-size: clamp(1.8em, 6vw, 2.8em);
         }
-        table thead th {
-            font-size: 1em; /* Keep header font size readable */
+        .modal-close-btn, .image-modal-close-btn { /* Apply to both modals */
+            font-size: 2em;
+            right: 15px;
+            top: 5px;
         }
 
-        .contact-form {
-            margin: 30px auto 0;
-            padding: 20px;
+        /* Table adjustments for 768px and below */
+        .modal-content table {
+            display: table; 
+            width: 100%; 
+            margin: 20px auto;
+            overflow-x: hidden; 
+            white-space: normal; 
         }
-        .contact-form input,
-        .contact-form textarea {
-            padding: 12px; /* Smaller padding for inputs */
-            font-size: 0.9em; /* Smaller font for inputs */
+        .modal-content table th, .modal-content table td {
+            padding: 10px; /* Padding more condensed for mobile */
+            font-size: 0.85em; /* Font size smaller for mobile */
         }
-        .contact-form button {
-            padding: 12px 25px; /* Smaller button padding */
-            font-size: 1em; /* Smaller button font */
+        .modal-content table thead th {
+            font-size: 0.9em; /* Font size for table headers on mobile */
+        }
+        .modal-content p {
+            font-size: 0.9em; /* Smaller paragraph font for modal on mobile */
+        }
+
+        /* Image modal responsive adjustments */
+        .image-modal-close-btn {
+            top: 15px;
+            right: 25px;
+            font-size: 35px;
+        }
+        .image-modal-content {
+            max-width: 95%;
+            max-height: 85%;
+        }
+        .image-modal-caption {
+            font-size: 1em;
+            max-width: 90%;
         }
 
         /* Gallery filter buttons for smaller screens */
         #gallery .gallery-buttons button {
-            padding: 8px 15px; /* Smaller padding */
-            font-size: 0.9em; /* Smaller font */
-            flex-grow: 1; /* Allow buttons to grow and fill space */
-            min-width: unset; /* Remove min-width restriction */
+            padding: 8px 15px; 
+            font-size: 0.9em; 
+            flex-grow: 1; 
+            min-width: unset; 
         }
 
         #gallery .gallery-item img {
-            height: 180px; /* Slightly reduce gallery image height */
+            height: 180px; 
         }
         #gallery .gallery-item-info h3 {
-            font-size: 1.2em; /* Smaller gallery title */
+            font-size: 1.2em; 
         }
         #gallery .gallery-item-info p {
-            font-size: 0.85em; /* Smaller gallery description */
+            font-size: 0.85em; 
         }
     }
 
     @media (max-width: 425px) {
         .container {
-            padding: 0 15px; /* Reduce container padding further */
+            padding: 0 15px; 
         }
         #loading-screen p {
-            font-size: 2em; /* Slightly smaller for 425px */
+            font-size: 2em; 
         }
         #loading-screen span {
             font-size: 1.2em;
@@ -869,57 +1060,57 @@
             font-size: 1.8em;
         }
         .hero {
-            padding: 60px 10px; /* Reduce hero padding */
-            min-height: 400px; /* Adjust min-height */
+            padding: 60px 10px; 
+            min-height: 400px; 
         }
         .hero h2 {
-            font-size: clamp(1.8em, 9vw, 3.5em); /* More aggressive clamping for smaller screens */
+            font-size: clamp(1.8em, 9vw, 3.5em); 
             margin-bottom: 15px;
         }
         .hero p {
-            font-size: clamp(0.9em, 2.8vw, 1.2em); /* More aggressive clamping */
+            font-size: clamp(0.9em, 2.8vw, 1.2em); 
             margin-bottom: 30px;
         }
         .btn {
-            padding: 10px 20px; /* Smaller button size */
+            padding: 10px 20px; 
             font-size: 0.8em;
         }
         .btn-secondary {
-            margin-top: 10px; /* Reduce top margin for stacked buttons */
+            margin-top: 10px; 
         }
 
         .section-content {
-            padding: 40px 0; /* Reduce section padding */
+            padding: 40px 0; 
         }
         .section-content h2 {
-            font-size: clamp(1.6em, 6vw, 2.5em); /* Smaller section headings */
+            font-size: clamp(1.6em, 6vw, 2.5em); 
             margin-bottom: 25px;
         }
         .section-content p {
-            font-size: 1em; /* Maintain readability */
+            font-size: 1em; 
         }
 
         /* Further adjustments for horizontal sections */
         .card-grid, .panitia-grid, .gallery-container, .contact-info {
-            gap: 15px; /* Even smaller gap */
-            padding: 0 10px 10px; /* Adjust padding for very small screens */
+            gap: 15px; 
+            padding: 0 10px 10px; 
         }
 
         .card {
-            width: 260px; /* Adjust card width */
+            width: 260px; 
         }
         .card h3 {
-            font-size: 1.5em; /* Adjust card title size */
+            font-size: 1.5em; 
         }
         .card p, .card ul {
-            font-size: 0.95em; /* Adjust card text size */
+            font-size: 0.95em; 
         }
 
         #panitia .panitia-member {
-            width: 200px; /* Adjust panitia member width */
+            width: 200px; 
         }
         #panitia .panitia-member img {
-            width: 100px; /* Smaller image */
+            width: 100px; 
             height: 100px;
         }
         #panitia .panitia-member h3 {
@@ -929,15 +1120,31 @@
             font-size: 0.85em;
         }
 
+        /* Image modal responsive adjustments */
+        .image-modal-close-btn {
+            top: 10px;
+            right: 15px;
+            font-size: 30px;
+        }
+        .image-modal-content {
+            max-width: 98%;
+            max-height: 80%;
+        }
+        .image-modal-caption {
+            font-size: 0.9em;
+            max-width: 95%;
+        }
+
         #gallery .gallery-buttons {
             gap: 10px;
         }
         #gallery .gallery-buttons button {
             padding: 6px 12px;
             font-size: 0.8em;
+            flex-grow: 1; 
         }
         #gallery .gallery-item {
-            width: 260px; /* Adjust gallery item width */
+            width: 260px; 
         }
         #gallery .gallery-item img {
             height: 160px;
@@ -951,28 +1158,13 @@
 
         .contact-person {
             padding: 20px;
-            width: 260px; /* Adjust contact person width */
+            width: 260px; 
         }
         .contact-person h3 {
             font-size: 1.3em;
         }
         .contact-person p {
             font-size: 0.9em;
-        }
-        .contact-form {
-            margin: 30px auto 0;
-            padding: 15px;
-            gap: 15px;
-        }
-        .contact-form input,
-        .contact-form textarea {
-            padding: 10px;
-            font-size: 0.85em;
-        }
-        .contact-form button {
-            padding: 10px 20px;
-            font-size: 0.9em;
-            min-width: 150px;
         }
         footer {
             padding: 20px 0;
@@ -989,7 +1181,7 @@
             font-size: 1em;
         }
         header .logo {
-            font-size: 1.8em; /* Adjusted logo size for 375px */
+            font-size: 1.8em; 
         }
         .hero h2 {
             font-size: clamp(1.6em, 10vw, 3em);
@@ -1003,16 +1195,16 @@
         }
         
         .card {
-            width: 240px; /* Adjust card width */
+            width: 240px; 
         }
         #panitia .panitia-member {
-            width: 180px; /* Adjust panitia member width */
+            width: 180px; 
         }
         #gallery .gallery-item {
-            width: 240px; /* Adjust gallery item width */
+            width: 240px; 
         }
         .contact-person {
-            width: 240px; /* Adjust contact person width */
+            width: 240px; 
         }
     }
 
@@ -1028,8 +1220,8 @@
             font-size: 1.6em;
         }
         .hero {
-            padding: 50px 8px; /* Even less padding */
-            min-height: 350px; /* Smaller min-height */
+            padding: 50px 8px; 
+            min-height: 350px; 
         }
         .hero h2 {
             font-size: clamp(1.4em, 11vw, 2.8em);
@@ -1045,7 +1237,7 @@
         }
 
         .section-content {
-            padding: 30px 0; /* Even less section padding */
+            padding: 30px 0; 
         }
         .section-content h2 {
             font-size: clamp(1.4em, 6.5vw, 2.2em);
@@ -1056,11 +1248,11 @@
         }
 
         .card-grid, .panitia-grid, .gallery-container, .contact-info {
-            gap: 10px; /* Smallest gap */
-            padding: 0 8px 8px; /* Smallest padding */
+            gap: 10px; 
+            padding: 0 8px 8px; 
         }
         .card {
-            width: 220px; /* Smallest card width */
+            width: 220px; 
             padding: 15px;
         }
         .card h3 {
@@ -1077,16 +1269,19 @@
             top: 1px;
         }
 
-        table th, table td {
-            padding: 8px; /* Smallest table padding */
-            font-size: 0.8em;
+        .modal-content table th, .modal-content table td {
+            padding: 8px; /* Padding paling kecil untuk layar sangat kecil */
+            font-size: 0.8em; /* Font size paling kecil untuk layar sangat kecil */
         }
-        table thead th {
-            font-size: 0.9em;
+        .modal-content table thead th {
+            font-size: 0.85em;
+        }
+        .modal-content p {
+            font-size: 0.9em; /* Font size paragraf untuk layar sangat kecil */
         }
 
         #panitia .panitia-member {
-            width: 160px; /* Smallest panitia member width */
+            width: 160px; 
             padding: 15px;
         }
         #panitia .panitia-member img {
@@ -1105,7 +1300,7 @@
             font-size: 0.75em;
         }
         #gallery .gallery-item {
-            width: 220px; /* Smallest gallery item width */
+            width: 220px; 
         }
         #gallery .gallery-item img {
             height: 140px;
@@ -1119,27 +1314,13 @@
 
         .contact-person {
             padding: 15px;
-            width: 220px; /* Adjust contact person width */
+            width: 220px; 
         }
         .contact-person h3 {
             font-size: 1.2em;
         }
         .contact-person p {
             font-size: 0.85em;
-        }
-        .contact-form {
-            padding: 10px;
-            gap: 10px;
-        }
-        .contact-form input,
-        .contact-form textarea {
-            padding: 8px;
-            font-size: 0.8em;
-        }
-        .contact-form button {
-            padding: 8px 15px;
-            font-size: 0.8em;
-            min-width: 120px;
         }
         footer {
             padding: 15px 0;
@@ -1183,6 +1364,7 @@
         </section>
 
         <section id="proposal" class="section-content">
+    <section id="proposal" class="section-content">
             <div class="container">
                 <h2>Rencana & Visi Perayaan</h2>
                 <p>Proposal lengkap kami merinci setiap aspek perayaan 17 Agustus ke-80, mulai dari jadwal kegiatan hingga tujuan mulia di baliknya. Transparansi dan detail adalah prioritas kami.</p>
@@ -1194,16 +1376,16 @@
                     <div class="card">
                         <h3>Rangkaian Acara Utama</h3>
                         <ul>
-                            <li>Upacara Bendera Khidmat (Pagi)</li>
                             <li>Lomba Tradisional Inovatif (Siang)</li>
                             <li>Pentas Seni Modern & Budaya (Sore)</li>
-                            <li>Malam Kebersamaan & Doa (Malam)</li>
+                            <li>Malam Kebersamaan & Doa </li>
                         </ul>
+                        <a href="acara.html" class="btn" style="margin-top: 20px; width: 100%; text-align: center; box-sizing: border-box; font-size: 0.9em;">Lihat Jadwal Lengkap</a>
                     </div>
                     <div class="card">
                         <h3>Estimasi Anggaran</h3>
                         <p>Total estimasi anggaran kegiatan ini akan dijelaskan secara rinci dalam dokumen proposal lengkap.</p>
-                        <a href="assets/Proposal Kegiatan HUT RI 80_RT011_RT004_RW002.pdf" class="btn btn-small" style="background-color: var(--accent-blue); border-color: var(--accent-blue);">Unduh Proposal Lengkap</a>
+                        <a href="estimasi.html" class="btn" style="margin-top: 85px; width: 100%; text-align: center; box-sizing: border-box; font-size: 0.9em; border-color: var(--accent-blue);">Lihat Estimasi Anggaran</a>
                     </div>
                 </div>
             </div>
@@ -1213,69 +1395,178 @@
             <div class="container">
                 <h2>Transparansi Laporan Keuangan</h2>
                 <p>Kami berkomitmen penuh pada transparansi keuangan. Setiap donasi dan pengeluaran dicatat dengan cermat, memastikan akuntabilitas bagi seluruh pihak yang terlibat.</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Deskripsi</th>
-                            <th>Pemasukan (IDR)</th>
-                            <th>Pengeluaran (IDR)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Donasi Warga & Sponsorship</td><td>[Total Pemasukan]</td><td>-</td></tr>
-                        <tr><td>Sewa Perlengkapan & Sound System</td><td>-</td><td>[Biaya]</td></tr>
-                        <tr><td>Hadiah Lomba & Logistik</td><td>-</td><td>[Biaya]</td></tr>
-                        <tr><td>Konsumsi Panitia & Peserta</td><td>-</td><td>[Biaya]</td></tr>
-                        <tr><td>Publikasi & Dokumentasi</td><td>-</td><td>[Biaya]</td></tr>
-                        <tr><td>Pos Cadangan</td><td>-</td><td>[Biaya]</td></tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Total</th>
-                            <th>[Total Pemasukan]</th>
-                            <th>[Total Pengeluaran]</th>
-                        </tr>
-                        <tr>
-                            <th colspan="2">Saldo Akhir</th>
-                            <th>[Saldo Akhir]</th>
-                        </tr>
-                    </tfoot>
-                </table>
-                <p>Untuk laporan keuangan lebih detail dengan bukti transaksi, silakan unduh di bawah ini:</p>
-                <a href="assets/Proposal Kegiatan HUT RI 80_RT011_RT004_RW002.pdf" class="btn btn-secondary">Unduh Laporan Keuangan (PDF)</a>
+
+                <button id="openKeuanganModal" class="btn" style="margin-bottom: 30px; background-color: red; border-color: red;">
+                    Lihat Laporan Keuangan Lengkap
+                </button>
             </div>
         </section>
 
+        <div id="keuanganModal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="modal-close-btn">&times;</span>
+                <h2>Laporan Keuangan Lengkap</h2>
+                <div class="modal-content-scroll">
+                    <p>Berikut adalah rincian lengkap pemasukan dan pengeluaran untuk perayaan HUT RI ke-80. Kami menjunjung tinggi transparansi agar setiap dana yang terkumpul dapat dipertanggungjawabkan sepenuhnya.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Deskripsi</th>
+                                <th>Pemasukan (IDR)</th>
+                                <th>Pengeluaran (IDR)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Donasi Warga & Sponsorship</td><td>Rp [Total Pemasukan]</td><td>-</td></tr>
+                            <tr><td>Sewa Perlengkapan & Sound System</td><td>-</td><td>Rp [Biaya]</td></tr>
+                            <tr><td>Hadiah Lomba & Logistik</td><td>-</td><td>Rp [Biaya]</td></tr>
+                            <tr><td>Konsumsi Panitia & Peserta</td><td>-</td><td>Rp [Biaya]</td></tr>
+                            <tr><td>Publikasi & Dokumentasi</td><td>-</td><td>Rp [Biaya]</td></tr>
+                            <tr><td>Pos Cadangan</td><td>-</td><td>Rp [Biaya]</td></tr>
+                            <tr><td>Pendapatan Bazar UMKM</td><td>Rp [Biaya]</td><td>-</td></tr>
+                            <tr><td>Biaya Kebersihan</td><td>-</td><td>Rp [Biaya]</td></tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Total</th>
+                                <th>Rp [Total Pemasukan]</th>
+                                <th>Rp [Total Pengeluaran]</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Saldo Akhir</th>
+                                <th>Rp [Saldo Akhir]</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <p>Setiap transaksi didokumentasikan dengan rapi dan dapat diaudit. Jika Anda memiliki pertanyaan lebih lanjut atau ingin melihat bukti transaksi, jangan ragu untuk menghubungi panitia.</p>
+                    <a href="assets/Proposal Kegiatan HUT RI 80_RT011_RT004_RW002.pdf" class="btn btn-secondary" style="display: block; width: fit-content; margin: 30px auto 0;">Unduh Laporan Keuangan (PDF)</a>
+                </div>
+            </div>
+        </div>
         <section id="panitia" class="section-content">
             <div class="container">
                 <h2>Panitia Pelaksana 2025</h2>
                 <p>Kenali para individu berdedikasi yang bekerja keras di balik layar untuk menyukseskan perayaan akbar ini. Semangat gotong royong adalah kunci kami.</p>
                 <div class="panitia-grid">
                     <div class="panitia-member">
-                        <img src="assets/fadil.jpg" alt="Foto Fadil">
-                        <h3>M Noer Fadillah</h3>
+                        <img src="assets/ade.jpg" alt="Foto Ade Wahyudi">
+                        <h3>Ade Wahyudi</h3>
+                        <p>Penanggung Jawab</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/fadil.jpg" alt="Foto M. Noer Fadillah">
+                        <h3>M. Noer Fadillah</h3>
                         <p>Ketua Panitia</p>
                     </div>
                     <div class="panitia-member">
-                        <img src="assets/wahyu.jpg" alt="Foto wahyu">
+                        <img src="assets/wahyu.jpg" alt="Foto Wahyu Febrizal">
                         <h3>Wahyu Febrizal</h3>
                         <p>Wakil Ketua Panitia</p>
                     </div>
                     <div class="panitia-member">
-                        <img src="assets/raki.jpg" alt="Foto raki">
-                        <h3>Raki setiawan</h3>
-                        <p>Bendahara</p>
+                        <img src="assets/aal.jpg" alt="Foto Alfiyah">
+                        <h3>Aal</h3>
+                        <p>Sekretaris & Humas</p>
                     </div>
                     <div class="panitia-member">
-                        <img src="assets/alfiyah.jpg" alt="Foto alfiyah">
-                        <h3>Alfiyah</h3>
-                        <p>Sekeretaris</p>
+                        <img src="assets/raki.jpg" alt="Foto Raki Adi Setiawan">
+                        <h3>Raki Adi Setiawan</h3>
+                        <p>Bendahara & dokumentasi</p>
                     </div>
                     <div class="panitia-member">
-                        <img src="assets/ade.jpg" alt="Foto Sari">
-                        <h3>Ade Wahyudi</h3>
-                        <p>Penanggung jawab</p>
-
+                        <img src="assets/putra.jpg" alt="Foto Ade Irawan Saputra">
+                        <h3>Ade Irawan Saputra</h3>
+                        <p>Seksi Acara</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/rasya.jpg" alt="Foto Ishaq Rasya">
+                        <h3>Ishaq Rasya</h3>
+                        <p>Seksi Acara</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/ilham.jpg" alt="Foto Ilham Saputra">
+                        <h3>Ilham Saputra</h3>
+                        <p>Seksi Acara</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Yos Hendrawan">
+                        <h3>Yos Hendrawan</h3>
+                        <p>Seksi Acara</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/fahmi.jpg" alt="Foto Fahmi Pratama">
+                        <h3>Fahmi Pratama</h3>
+                        <p>Seksi Acara</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Anhar Rasfati">
+                        <h3>Anhar Rasfati</h3>
+                        <p>Seksi Dokumentasi</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Iwan Al-Chotib">
+                        <h3>Iwan Al-Chotib</h3>
+                        <p>Seksi Humas</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Raka Bahariawan">
+                        <h3>Raka Bahariawan</h3>
+                        <p>Seksi Perlengkapan</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/aang.jpg" alt="Foto Rehansyah">
+                        <h3>Rehansyah</h3>
+                        <p>Seksi Perlengkapan</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Rafid Dianto">
+                        <h3>Rafid Dianto</h3>
+                        <p>Seksi Perlengkapan</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Muhammad Fajri">
+                        <h3>Muhammad Fajri</h3>
+                        <p>Seksi Perlengkapan</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Dimas Ramadhan">
+                        <h3>Dimas Ramadhan</h3>
+                        <p>Seksi Perlengkapan</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/bayu.jpg" alt="Foto Bayu Ramadhan">
+                        <h3>Bayu Ramadhan</h3>
+                        <p>Seksi Perlengkapan</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/jepang.jpg" alt="Foto Fariz Rizwan">
+                        <h3>Fariz Rizwan</h3>
+                        <p>Seksi Keamanan</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Enggal Badru Zaman">
+                        <h3>Enggal Badru Zaman</h3>
+                        <p>Seksi Keamanan</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Muhamad Rifky">
+                        <h3>Muhamad Rifky</h3>
+                        <p>Seksi Keamanan</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Fizi Erlangga Saputra">
+                        <h3>Fizi Erlangga Saputra</h3>
+                        <p>Seksi Konsumsi</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Fatoni Adam">
+                        <h3>Fatoni Adam</h3>
+                        <p>Seksi Konsumsi</p>
+                    </div>
+                    <div class="panitia-member">
+                        <img src="assets/placeholder.jpg" alt="Foto Muhammad Ridho">
+                        <h3>Muhammad Ridho</h3>
+                        <p>Seksi Konsumsi</p>
                     </div>
                 </div>
             </div>
@@ -1379,33 +1670,25 @@
                             <p>Keseruan dalam pawai.</p>
                         </div>
                     </div>
-                    <div class="gallery-item" data-year="2023">
-                        <img src="assets/gallery2023-4.jpg" alt="Galeri 2023 Foto 4">
-                        <div class="gallery-item-info">
-                            <h3>Gebyar Produk UMKM</h3>
-                            <p>Dukungan nyata untuk produk-produk lokal.</p>
-                        </div>
-                    </div>
-
                     <div class="gallery-item" data-year="2024">
                         <img src="assets/gallery2024-1.jpg" alt="Galeri 2024 Foto 1">
                         <div class="gallery-item-info">
-                            <h3></h3>
-                            <p>M.</p>
+                            <h3>Momen Perayaan 2024</h3>
+                            <p>Foto dari perayaan kemerdekaan tahun 2024.</p>
                         </div>
                     </div>
                     <div class="gallery-item" data-year="2024">
                         <img src="assets/gallery2024-2.jpg" alt="Galeri 2024 Foto 2">
                         <div class="gallery-item-info">
-                            <h3></h3>
-                            <p>.</p>
+                            <h3>Lomba Tarik Tambang 2024</h3>
+                            <p>Kegembiraan lomba tarik tambang.</p>
                         </div>
                     </div>
                     <div class="gallery-item" data-year="2024">
                         <img src="assets/gallery2024-3.jpg" alt="Galeri 2024 Foto 3">
                         <div class="gallery-item-info">
-                            <h3>pawai</h3>
-                            <p>pawai .</p>
+                            <h3>Pawaii Semarak 2024</h3>
+                            <p>Semarak pawai kemerdekaan 2024.</p>
                         </div>
                     </div>
                 </div>
@@ -1418,29 +1701,23 @@
                 <p>Untuk informasi lebih lanjut, kolaborasi, atau ingin berpartisipasi, jangan ragu untuk menghubungi tim kami:</p>
                 <div class="contact-info">
                     <div class="contact-person">
-                        <h3>Muhammad Noer Fadilah</h3>
+                        <h3>Muhammad Noer Fadillah</h3>
                         <p>Posisi: Ketua Panitia</p>
-                        <p>Telepon: <a href="tel:+6281234567890">+62</a></p>
-                        <p>Email: <a href="mailto:fadil.ramadhan@email.com">@email.com</a></p>
-                    </div>
-                    <div class="contact-person">
-                        <h3>Alfiyah</h3>
-                        <p>Posisi: Sekeretaris</p>
-                        <p>Telepon: <a href="tel:+6287654321098">+62</a></p>
-                        <p>Email: <a href="mailto:alfiyah.n@email.com">.n@email.com</a></p>
+                        <p>Telepon: <a href="tel:+6281234567890">+6281234567890</a></p>
+                        <p>Email: <a href="mailto:fadil.ramadhan@email.com">fadil.ramadhan@email.com</a></p>
+                        
+                        <a href="https://wa.me/628567475818?text=Saya%20ingin%20mendaftarkan%20lomba" target="_blank" class="btn" style="margin-top: 20px; width: 100%; text-align: center; box-sizing: border-box; background-color: var(--primary-color); border-color: var(--primary-color); color: var(--secondary-color);">Hubungi via WhatsApp</a>
                     </div>
                 </div>
-                <p style="margin-top: 50px;">Atau kirimkan pesan Anda melalui formulir di bawah ini:</p>
-                <form class="contact-form">
-                    <input type="text" placeholder="Nama Lengkap" required>
-                    <input type="email" placeholder="Alamat Email" required>
-                    <textarea placeholder="Pesan Anda..." rows="6" required></textarea>
-                    <button type="submit" class="btn">Kirim Pesan</button>
-                </form>
             </div>
         </section>
     </main>
 
+    <div id="imageModal" class="image-modal-overlay">
+        <span class="image-modal-close-btn">&times;</span>
+        <img class="image-modal-content" id="modalImage" src="" alt="Gambar Galeri Besar">
+        <div id="imageCaption" class="image-modal-caption"></div>
+    </div>
     <footer>
         <div class="container">
             <p>&copy; 2025 Panitia Perayaan 17 Agustus RI ke-80. Dirgahayu Republik Indonesia!</p>
@@ -1458,16 +1735,6 @@
                 loadingScreen.classList.add('hidden');
                 body.classList.add('loaded'); // Add class to body to reveal content and enable scroll
             }, 2500); // Durasi loading screen (2.5 detik)
-
-            // --- Contact Form Handling ---
-            const contactForm = document.querySelector('.contact-form');
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault(); 
-                    alert('Terima kasih! Pesan Anda telah berhasil terkirim. Kami akan segera menghubungi Anda.');
-                    contactForm.reset(); 
-                });
-            }
 
             // --- Hero Section Background Slider ---
             const heroSection = document.getElementById('beranda');
@@ -1524,6 +1791,82 @@
             if (defaultYearButton) {
                 defaultYearButton.click();
             }
+
+            // --- Keuangan Modal Logic ---
+            const openKeuanganModalBtn = document.getElementById('openKeuanganModal');
+            const keuanganModal = document.getElementById('keuanganModal');
+            const closeKeuanganModalBtn = keuanganModal.querySelector('.modal-close-btn');
+
+            openKeuanganModalBtn.addEventListener('click', function() {
+                keuanganModal.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Disable background scrolling
+            });
+
+            closeKeuanganModalBtn.addEventListener('click', function() {
+                keuanganModal.classList.remove('show');
+                document.body.style.overflow = ''; // Enable background scrolling
+            });
+
+            // Close modal when clicking outside of the modal content
+            keuanganModal.addEventListener('click', function(event) {
+                if (event.target === keuanganModal) {
+                    keuanganModal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && keuanganModal.classList.contains('show')) {
+                    keuanganModal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // --- Image Modal/Lightbox Logic ---
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const imageCaption = document.getElementById('imageCaption');
+            const closeImageModalBtn = imageModal.querySelector('.image-modal-close-btn');
+            const galleryItemsImages = document.querySelectorAll('#gallery .gallery-item img');
+
+            galleryItemsImages.forEach(image => {
+                image.addEventListener('click', function() {
+                    imageModal.classList.add('show');
+                    modalImage.src = this.src; // Setel sumber gambar modal sesuai yang diklik
+                    modalImage.alt = this.alt; // Setel alt teks
+                    // Ambil deskripsi dari elemen p di dalam .gallery-item-info
+                    const parentItemInfo = this.closest('.gallery-item').querySelector('.gallery-item-info p');
+                    if (parentItemInfo) {
+                        imageCaption.textContent = parentItemInfo.textContent;
+                    } else {
+                        imageCaption.textContent = this.alt; // Fallback ke alt jika tidak ada deskripsi
+                    }
+                    document.body.style.overflow = 'hidden'; // Nonaktifkan scroll halaman utama
+                });
+            });
+
+            // Tutup modal saat tombol silang diklik
+            closeImageModalBtn.addEventListener('click', function() {
+                imageModal.classList.remove('show');
+                document.body.style.overflow = ''; // Aktifkan kembali scroll halaman utama
+            });
+
+            // Tutup modal saat mengklik di luar gambar (pada overlay)
+            imageModal.addEventListener('click', function(event) {
+                if (event.target === imageModal || event.target === closeImageModalBtn) {
+                    imageModal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Tutup modal dengan tombol Escape
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && imageModal.classList.contains('show')) {
+                    imageModal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
         });
     </script>
 </body>
