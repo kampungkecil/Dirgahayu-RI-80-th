@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rangkaian Acara HUT RI ke-80</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #E4002B; /* Merah Bendera */
+            --secondary-color: #FFFFFF; /* Putih Bersih */
+            --light-bg: #FAFAFA; /* Latar belakang terang */
+            --dark-text: #333; /* Teks gelap */
+            --accent-red: #CC0000; /* Aksen merah lebih tua */
+            --accent-gold: #FFD700; /* Aksen emas */
+
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--dark-text);
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden; /* Pastikan tidak ada scroll horizontal yang tidak diinginkan */
+        }
+
+        .container {
+            max-width: 1000px; /* Sedikit lebih lebar untuk konten */
+            margin: 40px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            flex-grow: 1;
+        }
+
+        header {
+            background: linear-gradient(rgba(228, 0, 43, 0.9), rgba(204, 0, 0, 0.9)), url('https://via.placeholder.com/1920x300/E4002B/FFFFFF?text=DIRGAHAYU+INDONESIA') no-repeat center center/cover;
+            color: var(--secondary-color);
+            padding: 40px 0; /* Padding lebih besar */
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Coat_of_arms_of_Indonesia.svg/800px-Coat_of_arms_of_Indonesia.svg.png') no-repeat center;
+            background-size: 20%; /* Lambang Garuda yang lebih subtle */
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        header h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2em, 5vw, 3.5em); /* Ukuran lebih besar */
+            margin: 0;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5); /* Shadow lebih kuat */
+            position: relative;
+            z-index: 1;
+        }
+
+        .intro-text {
+            text-align: center;
+            font-size: 1.15em; /* Sedikit lebih besar */
+            margin: 30px auto 50px auto; /* Margin atas/bawah lebih besar */
+            color: var(--dark-text);
+            max-width: 700px; /* Batasi lebar untuk keterbacaan */
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            font-size: clamp(1.8em, 4vw, 2.8em); /* Ukuran lebih besar */
+            color: var(--primary-color);
+            text-align: center;
+            margin-top: 60px; /* Lebih banyak ruang di atas */
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 80px; /* Lebih lebar */
+            height: 4px; /* Lebih tebal */
+            background-color: var(--primary-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        .event-info {
+            background-color: var(--secondary-color);
+            padding: 30px; /* Padding lebih besar */
+            border-radius: 12px; /* Lebih bulat */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 50px; /* Lebih banyak ruang di bawah */
+            border: 1px solid #eee;
+        }
+
+        .event-info p {
+            margin: 10px 0;
+            font-size: 1.1em;
+            font-weight: 600; /* Lebih tebal */
+            color: var(--primary-color); /* Warna merah */
+        }
+        .event-info p:first-of-type {
+            font-size: 1.2em; /* Tanggal lebih besar */
+        }
+
+        /* Lomba Categories Styling */
+        .lomba-category {
+            background-color: var(--secondary-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 40px; /* Jarak antar kategori */
+            padding: 30px;
+            border: 1px solid #ddd;
+            overflow: hidden; /* Untuk menampung floating h3 */
+            position: relative;
+        }
+
+        .lomba-category h3 {
+            font-family: var(--font-heading);
+            font-size: 1.6em; /* Lebih besar */
+            color: var(--dark-text);
+            margin-top: 0;
+            margin-bottom: 25px; /* Jarak dengan daftar lomba */
+            border-bottom: 3px solid var(--accent-blue); /* Garis biru aksen */
+            padding-bottom: 8px;
+            display: block; /* Mengambil seluruh lebar */
+            text-align: left;
+        }
+
+        /* Grid untuk daftar lomba agar lebih rapi */
+        .lomba-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 2-3 kolom responsif */
+            gap: 15px; /* Jarak antar lomba */
+        }
+
+        .lomba-list li {
+            background-color: var(--light-bg); /* Warna latar belakang item lomba */
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            font-size: 1em;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .lomba-list li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .lomba-list li i { /* Ikon Font Awesome */
+            color: var(--primary-color);
+            margin-right: 12px;
+            font-size: 1.1em;
+        }
+
+        /* Gaya untuk beberapa kategori tertentu (opsional, untuk sentuhan unik) */
+        .lomba-category.balita h3 { border-bottom-color: #FFC107; } /* Kuning cerah */
+        .lomba-category.anak-anak h3 { border-bottom-color: #4CAF50; } /* Hijau */
+        .lomba-category.remaja h3 { border-bottom-color: #2196F3; } /* Biru */
+        .lomba-category.ibu-ibu h3 { border-bottom-color: #9C27B0; } /* Ungu */
+        .lomba-category.dewasa h3 { border-bottom-color: #FF5722; } /* Oranye */
+        .lomba-category.semua-usia h3 { border-bottom-color: #009688; } /* Teal */
+
+
+        .important-notes {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 40px; /* Padding lebih besar */
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 60px; /* Lebih banyak ruang di atas */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .important-notes h3 {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--secondary-color); /* Garis bawah putih */
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: clamp(1.4em, 3.5vw, 2em);
+            display: inline-block; /* Agar border sesuai lebar teks */
+        }
+
+        .important-notes p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-gold);
+            color: var(--primary-color);
+            padding: 15px 35px; /* Tombol lebih besar */
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-size: 1.1em;
+        }
+
+        .cta-button:hover {
+            background-color: #FFC400;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        footer {
+            background-color: var(--dark-text);
+            color: var(--secondary-color);
+            text-align: center;
+            padding: 25px 0; /* Padding footer lebih rapi */
+            margin-top: 80px; /* Jarak dari konten di atasnya */
+            font-size: 0.9em;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                margin: 30px auto;
+                padding: 0 15px;
+            }
+
+            header {
+                padding: 30px 0;
+            }
+            header h1 {
+                font-size: clamp(1.8em, 6vw, 2.5em);
+            }
+
+            .intro-text {
+                font-size: 1.05em;
+                margin: 20px auto 40px auto;
+            }
+
+            h2 {
+                margin-top: 50px;
+                margin-bottom: 25px;
+            }
+            h2::after {
+                width: 70px;
+                height: 3px;
+            }
+
+            .event-info {
+                padding: 25px;
+                margin-bottom: 40px;
+            }
+            .event-info p {
+                font-size: 1em;
+            }
+            .event-info p:first-of-type {
+                font-size: 1.1em;
+            }
+
+            .lomba-category {
+                padding: 25px;
+                margin-bottom: 30px;
+            }
+            .lomba-category h3 {
+                font-size: 1.4em;
+                margin-bottom: 20px;
+            }
+            .lomba-list {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 10px;
+            }
+            .lomba-list li {
+                padding: 12px 15px;
+                font-size: 0.95em;
+            }
+            .lomba-list li i {
+                font-size: 1em;
+                margin-right: 10px;
+            }
+
+            .important-notes {
+                padding: 30px;
+                margin-top: 50px;
+            }
+            .important-notes h3 {
+                font-size: clamp(1.2em, 4vw, 1.8em);
+            }
+            .important-notes p {
+                font-size: 1em;
+            }
+            .cta-button {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+            footer {
+                padding: 20px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 20px auto;
+                padding: 0 10px;
+            }
+            header {
+                padding: 25px 0;
+            }
+            header h1 {
+                font-size: clamp(1.6em, 8vw, 2.2em);
+            }
+            .intro-text {
+                font-size: 0.95em;
+                margin: 15px auto 30px auto;
+            }
+            h2 {
+                margin-top: 40px;
+                margin-bottom: 20px;
+                font-size: clamp(1.3em, 6vw, 2em);
+            }
+            h2::after {
+                width: 60px;
+                height: 2px;
+            }
+
+            .event-info {
+                padding: 20px;
+                margin-bottom: 30px;
+            }
+            .event-info p {
+                font-size: 0.95em;
+            }
+            .event-info p:first-of-type {
+                font-size: 1em;
+            }
+
+            .lomba-category {
+                padding: 20px;
+                margin-bottom: 25px;
+            }
+            .lomba-category h3 {
+                font-size: 1.2em;
+                margin-bottom: 15px;
+            }
+            .lomba-list {
+                grid-template-columns: 1fr; /* Satu kolom di mobile kecil */
+                gap: 10px;
+            }
+            .lomba-list li {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+            .lomba-list li i {
+                font-size: 0.9em;
+                margin-right: 8px;
+            }
+
+            .important-notes {
+                padding: 25px;
+                margin-top: 40px;
+            }
+            .important-notes h3 {
+                font-size: clamp(1.1em, 5vw, 1.5em);
+            }
+            .important-notes p {
+                font-size: 0.9em;
+            }
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+            footer {
+                padding: 15px 0;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Rangkaian Acara HUT RI ke-80</h1>
+    </header>
+
+    <div class="container">
+        <p class="intro-text">
+            Dalam rangka memperingati Hari Ulang Tahun Republik Indonesia ke-80, mari kita semarakkan dengan berbagai lomba seru dan penuh makna! 
+        </p>
+
+        <div class="event-info">
+            <p><i class="fas fa-calendar-alt"></i> Tanggal Acara: **17 AGUSTUS 2025**</p>
+            <p><i class="fas fa-map-marker-alt"></i> Lokasi Acara: **JALAN H. MUHAJAR**</p>
+        </div>
+
+        <h2>Daftar Lomba Berdasarkan Kategori Usia</h2>
+
+        <section class="lomba-category balita">
+            <h3>LOMBA BALITA (3-5 TAHUN)</h3>
+            <ul class="lomba-list">
+                <li><i class="fas fa-medal"></i> Lomba Masukin Bendera Ke Botol</li>
+                <li><i class="fas fa-medal"></i> Lomba Menyusun Bola Berwarna</li>
+                <li><i class="fas fa-medal"></i> Lomba Pindahin Bola</li>
+            </ul>
+        </section>
+
+        <section class="lomba-category anak-anak">
+            <h3>LOMBA ANAK-ANAK (6-9 TAHUN)</h3>
+            <ul class="lomba-list">
+                <li><i class="fas fa-medal"></i> Lomba Kelereng</li>
+                <li><i class="fas fa-medal"></i> Lomba Makan Kerupuk</li>
+                <li><i class="fas fa-medal"></i> Lomba Masukin Sumpit Ke Botol</li>
+                <li><i class="fas fa-medal"></i> Lomba Tiup Botol</li>
+                <li><i class="fas fa-medal"></i> Lomba Masukin Air Pakai Corong</li>
+            </ul>
+        </section>
+
+        <section class="lomba-category remaja">
+            <h3>LOMBA REMAJA (10-14 TAHUN)</h3>
+            <ul class="lomba-list">
+                <li><i class="fas fa-medal"></i> Lomba Masukin Air Pakai Corong</li>
+                <li><i class="fas fa-medal"></i> Lomba Ambil Karet Pakai Sedotan</li>
+                <li><i class="fas fa-medal"></i> Lomba Tahan Tawa Dengan Air</li>
+            </ul>
+        </section>
+
+        <section class="lomba-category ibu-ibu">
+            <h3>LOMBA IBU IBU</h3>
+            <ul class="lomba-list">
+                <li><i class="fas fa-medal"></i> Lomba Gendong Ember</li>
+                <li><i class="fas fa-medal"></i> Lomba Turunin Bola Pakai Galon</li>
+                <li><i class="fas fa-medal"></i> Lomba Masukin Sedotan Ke Botol</li>
+                <li><i class="fas fa-medal"></i> Lomba Bawa Tampah Dikepala</li>
+            </ul>
+        </section>
+
+        <section class="lomba-category dewasa">
+            <h3>LOMBA DEWASA</h3>
+            <ul class="lomba-list">
+                <li><i class="fas fa-medal"></i> Lomba Karoke</li>
+                <li><i class="fas fa-medal"></i> Lomba Karambol</li>
+                <li><i class="fas fa-medal"></i> Lomba Catur</li>
+                <li><i class="fas fa-medal"></i> Lomba PES / PS 3</li>
+            </ul>
+        </section>
+
+        <section class="lomba-category semua-usia">
+            <h3>LOMBA SEMUA USIA</h3>
+            <ul class="lomba-list">
+                <li><i class="fas fa-flag-checkered"></i> Karnaval Pakaian Terunik</li>
+                <li><i class="fas fa-bicycle"></i> Karnaval Sepeda Hias</li>
+            </ul>
+        </section>
+
+        <div class="important-notes">
+            <h3>Informasi Penting untuk Peserta:</h3>
+            <p>Peserta diharapkan mengenakan atribut Baju Merah Atau Baju Putih. (Jika Ada)</p>
+            <p>"MERDEKA ADALAH SEMANGAT KITA, LOMBA ADALAH CARA KITA BERGEMBIRA!"</p>
+            <a href="https://wa.me/628567475818?text=Saya%20ingin%20mendaftarkan%20lomba" target="_blank" class="cta-button">DAFTAR SEKARANG JUGA!</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Kampung Kecil RT011/RT004 RW002. Semarak Kemerdekaan Indonesia.</p>
+        </div>
+    </footer>
+</body>
+</html>
